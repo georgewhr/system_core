@@ -550,6 +550,7 @@ static int audit_callback(void *data, security_class_t /*cls*/, char *buf, size_
     return 0;
 }
 
+#ifndef HLABS
 static void selinux_initialize(bool in_kernel_domain) {
     Timer t;
 
@@ -586,6 +587,7 @@ static void selinux_initialize(bool in_kernel_domain) {
         selinux_init_all_handles();
     }
 }
+#endif
 
 int main(int argc, char** argv) {
     if (!strcmp(basename(argv[0]), "ueventd")) {
@@ -642,8 +644,9 @@ int main(int argc, char** argv) {
     }
 
     // Set up SELinux, including loading the SELinux policy if we're in the kernel domain.
+#ifndef HLABS
     selinux_initialize(is_first_stage);
-
+#endif
     // If we're in the kernel domain, re-exec init to transition to the init domain now
     // that the SELinux policy has been loaded.
     if (is_first_stage) {
@@ -697,8 +700,10 @@ int main(int argc, char** argv) {
     // Queue an action that waits for coldboot done so we know ueventd has set up all of /dev...
     am.QueueBuiltinAction(wait_for_coldboot_done_action, "wait_for_coldboot_done");
     // ... so that we can start queuing up actions that require stuff from /dev.
+#ifndef HLABS
     am.QueueBuiltinAction(mix_hwrng_into_linux_rng_action, "mix_hwrng_into_linux_rng");
     am.QueueBuiltinAction(set_mmap_rnd_bits_action, "set_mmap_rnd_bits");
+#endif
     am.QueueBuiltinAction(keychord_init_action, "keychord_init");
     am.QueueBuiltinAction(console_init_action, "console_init");
 
