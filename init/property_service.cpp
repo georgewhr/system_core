@@ -485,8 +485,11 @@ void load_recovery_id_prop() {
         ERROR("ro.hardware not set - unable to load recovery id\n");
         return;
     }
+#ifdef HLABS
+    std::string fstab_filename = FSTAB_PREFIX;
+#else
     std::string fstab_filename = FSTAB_PREFIX + ro_hardware;
-
+#endif
     std::unique_ptr<fstab, void(*)(fstab*)> tab(fs_mgr_read_fstab(fstab_filename.c_str()),
             fs_mgr_free_fstab);
     if (!tab) {

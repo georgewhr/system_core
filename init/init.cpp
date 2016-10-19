@@ -257,6 +257,7 @@ static void security_failure() {
     while (true) { pause(); }  // never reached
 }
 
+#ifndef HLABS
 #define MMAP_RND_PATH "/proc/sys/vm/mmap_rnd_bits"
 #define MMAP_RND_COMPAT_PATH "/proc/sys/vm/mmap_rnd_compat_bits"
 
@@ -344,6 +345,8 @@ static int set_mmap_rnd_bits_action(const std::vector<std::string>& args)
     }
     return ret;
 }
+#endif
+//HLABS
 
 static int keychord_init_action(const std::vector<std::string>& args)
 {

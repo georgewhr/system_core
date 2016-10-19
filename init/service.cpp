@@ -453,7 +453,11 @@ bool Service::Start() {
             }
         }
         if (!seclabel_.empty()) {
+#ifdef HLABS
+            if (is_selinux_enabled() > 0 && setexeccon(seclabel_.c_str()) < 0) {
+#else
             if (setexeccon(seclabel_.c_str()) < 0) {
+#endif
                 ERROR("cannot setexeccon('%s'): %s\n",
                       seclabel_.c_str(), strerror(errno));
                 _exit(127);
