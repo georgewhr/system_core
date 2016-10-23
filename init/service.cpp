@@ -344,7 +344,9 @@ bool Service::Start() {
     }
 
     std::string scon;
-    if (!seclabel_.empty()) {
+    //HLABS, force skipping sec check
+    //if (!seclabel_.empty()) {
+    if (1) {
         scon = seclabel_;
     } else {
         char* mycon = nullptr;
