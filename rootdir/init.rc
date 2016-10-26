@@ -443,7 +443,8 @@ on post-fs-data
     mkdir /data/media 0770 media_rw media_rw
     mkdir /data/media/obb 0770 media_rw media_rw
 
-    init_user0
+    #HLABS This action will cause a hang on init process
+    # init_user0
 
     # Reload policy from /data/security if present.
     setprop selinux.reload_policy 1

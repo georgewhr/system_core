@@ -345,8 +345,8 @@ bool Service::Start() {
 
     std::string scon;
     //HLABS, force skipping sec check
-    //if (!seclabel_.empty()) {
-    if (1) {
+    if (!seclabel_.empty()) {
+    //if (1) {
         scon = seclabel_;
     } else {
         char* mycon = nullptr;
@@ -375,9 +375,10 @@ bool Service::Start() {
         }
         if (rc == 0 && scon == mycon) {
             ERROR("Service %s does not have a SELinux domain defined.\n", name_.c_str());
-            free(mycon);
+            //HLABS, skip SElinux check
+            /*free(mycon);
             free(fcon);
-            return false;
+            return false;*/
         }
         free(mycon);
         free(fcon);
